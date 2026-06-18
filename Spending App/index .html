@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Spending Journal</title>
+
+    <meta name="theme-color" content="#F8F6F2">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Welcome Screen -->
+    <section id="welcomeScreen" class="screen">
+        <div class="card">
+            <h1>💰 Daily Spending Journal</h1>
+
+            <p>
+                Track your spending privately.
+            </p>
+
+            <p>
+                Your data is stored only on this device.
+                Nothing is sent to any server.
+            </p>
+
+            <div class="button-group">
+                <button id="createPinBtn" class="primary-btn">
+                    🔒 Create PIN
+                </button>
+
+                <button id="skipPinBtn" class="secondary-btn">
+                    ⏭️ Continue Without PIN
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create PIN Screen -->
+    <section id="pinSetupScreen" class="screen hidden">
+        <div class="card">
+            <h2>🔒 Create PIN</h2>
+
+            <label>PIN</label>
+            <input type="password" id="pinInput" maxlength="6" inputmode="numeric">
+
+            <label>Confirm PIN</label>
+            <input type="password" id="confirmPinInput" maxlength="6" inputmode="numeric">
+
+            <div class="warning-box">
+                <strong>⚠️ Important</strong>
+                <p>
+                    This app stores data only on your device.
+                </p>
+                <p>
+                    If you forget your PIN, your data cannot be recovered.
+                </p>
+                <p>
+                    Resetting your PIN will permanently delete all records.
+                </p>
+            </div>
+
+            <button id="savePinBtn" class="primary-btn">
+                Create PIN
+            </button>
+        </div>
+    </section>
+
+    <!-- Unlock Screen -->
+    <section id="unlockScreen" class="screen hidden">
+        <div class="card">
+            <h2>🔒 Enter PIN</h2>
+
+            <input type="password" id="unlockPinInput" maxlength="6" inputmode="numeric">
+
+            <button id="unlockBtn" class="primary-btn">
+                Unlock
+            </button>
+
+            <button id="forgotPinBtn" class="danger-btn">
+                Forgot PIN?
+            </button>
+        </div>
+    </section>
+
+    <!-- Forgot PIN Modal -->
+    <div id="forgotPinModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>⚠️ Reset App</h3>
+
+            <p>
+                There is no PIN recovery.
+            </p>
+
+            <p>
+                Resetting will permanently delete:
+            </p>
+
+            <ul>
+                <li>Spending history</li>
+                <li>Notes</li>
+                <li>Reflections</li>
+                <li>Settings</li>
+            </ul>
+
+            <div class="button-group">
+                <button id="cancelResetBtn" class="secondary-btn">
+                    Cancel
+                </button>
+
+                <button id="confirmResetBtn" class="danger-btn">
+                    Delete Everything
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <section id="appScreen" class="hidden">
+
+        <!-- Header -->
+        <header class="app-header">
+            <h1>💰 Daily Spending Journal</h1>
+
+            <button id="privacyToggleBtn" class="secondary-btn">
+                👁 Amounts Visible
+            </button>
+        </header>
+
+        <!-- Dashboard -->
+        <section class="card">
+            <h2>📊 Dashboard</h2>
+
+            <div class="stats-grid">
+
+                <div class="stat-box">
+                    <span>This Week</span>
+                    <strong id="weeklyTotal">0 EGP</strong>
+                </div>
+
+                <div class="stat-box">
+                    <span>This Month</span>
+                    <strong id="monthlyTotal">0 EGP</strong>
+                </div>
+
+                <div class="stat-box">
+                    <span>🔥 Current Streak</span>
+                    <strong id="currentStreak">0 Days</strong>
+                </div>
+
+                <div class="stat-box">
+                    <span>📅 Logged Days</span>
+                    <strong id="loggedDays">0</strong>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Daily Entry -->
+        <section class="card">
+            <h2>📝 Today's Spending</h2>
+
+            <label>Amount (EGP)</label>
+            <input type="number" id="amountInput" placeholder="Enter amount">
+
+            <label>Optional Note</label>
+            <textarea id="noteInput" rows="3" placeholder="Add a note"></textarea>
+
+            <button id="saveEntryBtn" class="primary-btn">
+                Save Entry
+            </button>
+        </section>
+
+        <!-- Missed Days -->
+        <section id="missedDaysSection" class="card hidden">
+            <h2>📅 Missed Days</h2>
+
+            <div id="missedDaysContainer"></div>
+
+            <button id="saveMissedDaysBtn" class="primary-btn">
+                Save Missing Entries
+            </button>
+        </section>
+
+        <!-- History -->
+        <section class="card">
+            <h2>📜 History</h2>
+
+            <div id="historyContainer">
+                <p>No entries yet.</p>
+            </div>
+        </section>
+
+        <!-- Monthly Reflection -->
+        <section class="card">
+            <h2>📅 Monthly Reflection</h2>
+
+            <div class="emoji-grid">
+                <button class="emoji-btn" data-mood="😄">😄 Excellent</button>
+                <button class="emoji-btn" data-mood="🙂">🙂 Good</button>
+                <button class="emoji-btn" data-mood="😐">😐 Okay</button>
+                <button class="emoji-btn" data-mood="😕">😕 Could Be Better</button>
+                <button class="emoji-btn" data-mood="😩">😩 Too Much Spending</button>
+            </div>
+
+            <textarea
+                id="reflectionNote"
+                rows="3"
+                placeholder="Optional note">
+            </textarea>
+
+            <button id="saveReflectionBtn" class="primary-btn">
+                Save Reflection
+            </button>
+        </section>
+
+        <!-- Milestones -->
+        <section class="card">
+            <h2>🏆 Milestones</h2>
+
+            <div id="milestoneContainer">
+                <p>No milestones yet.</p>
+            </div>
+        </section>
+
+        <!-- Settings -->
+        <section class="card">
+            <h2>⚙️ Settings</h2>
+
+            <div class="setting-item">
+                <label>Daily Reminder Time</label>
+                <input type="time" id="reminderTimeInput">
+            </div>
+
+            <button id="saveReminderBtn" class="primary-btn">
+                Save Reminder
+            </button>
+
+            <hr>
+
+            <button id="exportDataBtn" class="secondary-btn">
+                📤 Export Backup
+            </button>
+
+            <button id="importDataBtn" class="secondary-btn">
+                📥 Import Backup
+            </button>
+
+            <input
+                type="file"
+                id="importFileInput"
+                accept=".json"
+                hidden>
+        </section>
+
+    </section>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
